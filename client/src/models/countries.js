@@ -1,11 +1,13 @@
 var Country = require('./country');
 
-var Countries = function(){}
+var Countries = function(){
+  this.url = 'http://localhost:3001/api/countries';
+}
 
 Countries.prototype = {
 
   all: function(callback){
-    this.makeRequest('http://localhost:3001/api/countries', function(bucketListCountries){
+    this.makeRequest(this.url, function(bucketListCountries){
       callback(bucketListCountries);
     })
   },
@@ -21,6 +23,27 @@ Countries.prototype = {
       callback(resultsData); 
     })
     request.send();
+  },
+
+  add: function(countryToAdd, callback){
+    // var jsonString = JSON.stringify(countryToAdd);
+    this.makePostRequest(this.url, callback, countryToAdd);
+  },
+
+  makePostRequest: function(url, callback, payload){
+    var request = new XMLHttpRequest();
+    request.open('POST', url);
+    request.setRequestHeader('Content-Type', 'application/json');
+
+    request.addEventListener('load', function(){
+      var jsonString = request.responseText;
+      console.log('jsonString: ', jsonString);
+      var updatedCountries = JSON.parse(jsonString);
+      callback(updatedCountries);
+    });
+    request.send(payload);
   }
 
 }
+
+module.exports = Countries;

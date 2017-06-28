@@ -1,5 +1,12 @@
+var Countries = require('./models/countries.js')  
+
 var onLoad = function() {
-  
+
+  var countries = new Countries();
+
+  countries.all(function(countriesData){
+    renderCountries(countriesData);
+  })
 
   var url = 'https://restcountries.eu/rest/v2';
   var request = new XMLHttpRequest();
@@ -9,13 +16,12 @@ var onLoad = function() {
 
   request.addEventListener('load', function() {
     var jsonString = request.responseText;
-    console.log("jsonString",jsonString)
     var countries = JSON.parse(jsonString);
-    console.log("all countries", countries)
-
+    
     dropDownCountries(countries);
+
   })
-}
+}//onLoad
 
 var renderCountries = function(countries){
   var ul = document.getElementById('bucket-list-countries');
@@ -31,13 +37,27 @@ var dropDownCountries = function(countries) {
   var dropDown = document.getElementById('country-selector');
 
   countries.forEach(function(country, index) {
-    console.log("dropDownCountries", country, index)
+
     var option = document.createElement('option');
-    option.value = index;
+    option.value = country.name;
     option.text = country.name;
     dropDown.appendChild(option);
   })
 
+  dropDown.addEventListener('change', function(event){
+    console.log("country selected", event.target.value);
+
+    var countryToAdd = event.target.value;
+    console.log("about to add: ", countryToAdd);
+    addCountryToDatabase(countryToAdd);
+  });
+
 }
+  var addCountryToDatabase = function(countryToAdd){
+    var countries = new Countries();
+    countries.add(countryToAdd, function(updatedCountries){
+      renderCountries(updatedCountries);
+    });
+  }
 
 window.addEventListener('load', onLoad);

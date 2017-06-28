@@ -16,6 +16,17 @@ countriesRouter.get('/', function(req, res) {
     console.log("countries.js")
     res.json(countries);
   })
+}),
+
+//write data to the database
+countriesRouter.post('/', function(req, res) {
+  var newCountry = new Country ({
+    name: req.body.name
+  })
+});
+
+query.add(newCountry, function(allCountries) {
+  res.json(allCountries);
 })
 
 
