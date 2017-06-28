@@ -20,14 +20,15 @@ countriesRouter.get('/', function(req, res) {
 
 //write data to the database
 countriesRouter.post('/', function(req, res) {
-  var newCountry = new Country ({
+  var newCountry = new Country( {
     name: req.body.name
-  })
-});
+  }) 
 
-query.add(newCountry, function(allCountries) {
-  res.json(allCountries);
+  query.add(newCountry, function(allCountries) {
+    res.json(allCountries);
+  })
 })
+
 
 
 module.exports = countriesRouter;

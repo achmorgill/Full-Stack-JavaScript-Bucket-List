@@ -124,6 +124,7 @@ var dropDownCountries = function(countries) {
 
 }
   var addCountryToDatabase = function(countryToAdd){
+    console.log("addCountryToDatabase",countryToAdd)
     var countries = new Countries();
     countries.add(countryToAdd, function(updatedCountries){
       renderCountries(updatedCountries);
@@ -165,23 +166,34 @@ Countries.prototype = {
   },
 
   add: function(countryToAdd, callback){
-    // var jsonString = JSON.stringify(countryToAdd);
-    this.makePostRequest(this.url, callback, countryToAdd);
+    console.log("**** countries *** add", countryToAdd)
+    var jsonString = JSON.stringify(countryToAdd);
+    console.log( "****countries**. jsonString", jsonString)
+    this.makePostRequest(this.url, callback, jsonString);
   },
 
   makePostRequest: function(url, callback, payload){
+    console.log("makepostrequest payload",  payload, url)
     var request = new XMLHttpRequest();
+    console.log("request", request)
     request.open('POST', url);
-    request.setRequestHeader('Content-Type', 'application/json');
+     request.setRequestHeader('Content-Type', 'application/json');
 
     request.addEventListener('load', function(){
+      console.log(" ******addeventlistener")
       var jsonString = request.responseText;
       console.log('jsonString: ', jsonString);
       var updatedCountries = JSON.parse(jsonString);
       callback(updatedCountries);
     });
     request.send(payload);
-  }
+  },
+  add: function(countryToAdd, callback){
+    console.log("**** countries *** add", countryToAdd)
+    var jsonString = JSON.stringify(countryToAdd);
+    console.log( "****countries**. jsonString", jsonString)
+    this.makePostRequest(this.url, callback, jsonString);
+  },
 
 }
 
@@ -194,10 +206,6 @@ module.exports = Countries;
 
 var Country = function(options){
   this.name = options.name;
-}
-
-Country.prototype = {
-
 }
 
 module.exports = Country;

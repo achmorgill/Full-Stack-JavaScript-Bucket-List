@@ -54,6 +54,7 @@ var dropDownCountries = function(countries) {
 
 }
   var addCountryToDatabase = function(countryToAdd){
+    console.log("addCountryToDatabase",countryToAdd)
     var countries = new Countries();
     countries.add(countryToAdd, function(updatedCountries){
       renderCountries(updatedCountries);
