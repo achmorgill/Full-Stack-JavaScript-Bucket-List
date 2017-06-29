@@ -23,7 +23,7 @@ countriesRouter.post('/', function(req, res) {
   var newCountry = new Country( {
     name: req.body.name
   }) 
-
+console.log("adding new country", newCountry)
   query.add(newCountry, function(allCountries) {
     res.json(allCountries);
   })

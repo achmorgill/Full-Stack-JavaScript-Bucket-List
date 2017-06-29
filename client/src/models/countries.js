@@ -14,6 +14,7 @@ Countries.prototype = {
 
   makeRequest: function(url, callback){
     var request = new XMLHttpRequest();
+    console.log("makerequest", request)
     request.open('GET', url);
     request.addEventListener('load', function(){
       if (request.status !== 200 ) return;
@@ -24,16 +25,9 @@ Countries.prototype = {
     })
     request.send();
   },
-
-  add: function(countryToAdd, callback){
-    console.log("**** countries *** add", countryToAdd)
-    var jsonString = JSON.stringify(countryToAdd);
-    console.log( "****countries**. jsonString", jsonString)
-    this.makePostRequest(this.url, callback, jsonString);
-  },
+  
 
   makePostRequest: function(url, callback, payload){
-    console.log("makepostrequest payload",  payload, url)
     var request = new XMLHttpRequest();
     console.log("request", request)
     request.open('POST', url);
@@ -42,18 +36,21 @@ Countries.prototype = {
     request.addEventListener('load', function(){
       console.log(" ******addeventlistener")
       var jsonString = request.responseText;
-      console.log('jsonString: ', jsonString);
+      console.log('jsonString: ');
       var updatedCountries = JSON.parse(jsonString);
+      console.log('JSON parse', updatedCountries)
       callback(updatedCountries);
     });
     request.send(payload);
   },
-  add: function(countryToAdd, callback){
-    console.log("**** countries *** add", countryToAdd)
-    var jsonString = JSON.stringify(countryToAdd);
-    console.log( "****countries**. jsonString", jsonString)
-    this.makePostRequest(this.url, callback, jsonString);
-  },
+
+  add: function(country, callback){
+      countryObject = { name: country };
+      console.log("country to add: ", countryObject)
+      var jsonString = JSON.stringify(countryObject);
+      console.log("jsonString made from country: ", jsonString)
+      this.makePostRequest(this.url, callback, jsonString);
+    },
 
 }
 
